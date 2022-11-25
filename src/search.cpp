@@ -629,7 +629,7 @@ int q_search(searchthread* thread, searchinfo* info, const int depth, int alpha,
 	Position* pos = &thread->position;
 	thread->nodes++;
 
-	const int ply = info->ply;
+	const int ply =static_cast<uint8_t>(info->ply);
 	const bool is_pv = beta - alpha > 1;
 
 	if (is_pv)

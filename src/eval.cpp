@@ -30,7 +30,7 @@ Score Eval::evaluate_passers() const
 	constexpr color opponent = ~Side;
 	constexpr int up = Side == white ? north : south;
 	Score out = S(0, 0);
-	uint64_t passers = pawnhashe_->passed_pawns[Side];
+	uint64_t passers = pawnhashentry_->passed_pawns[Side];
 	const uint64_t my_rooks = pos_.piece_bb[make_piece(Side, rook)];
 	const uint64_t opponent_rooks = pos_.piece_bb[make_piece(opponent, rook)];
 	while (passers)
@@ -64,12 +64,12 @@ Score Eval::evaluate_passers() const
 //-------------------------------------------//
 void Eval::evaluate_pawns() const
 {
-	if (pawnhashe_->pawn_hash != pos_.pawnhash)
+	if (pawnhashentry_->pawn_hash != pos_.pawnhash)
 	{
-		pawnhashe_->pawn_hash = pos_.pawnhash;
-		pawnhashe_->kingpos[white] = pos_.kingpos[white];
-		pawnhashe_->kingpos[black] = pos_.kingpos[black];
-		pawnhashe_->castling = pos_.castle_rights;
+		pawnhashentry_->pawn_hash = pos_.pawnhash;
+		pawnhashentry_->kingpos[white] = pos_.kingpos[white];
+		pawnhashentry_->kingpos[black] = pos_.kingpos[black];
+		pawnhashentry_->castling = pos_.castle_rights;
 
 		evaluate_pawn_structure<white>();
 		evaluate_pawn_structure<black>();
@@ -78,17 +78,17 @@ void Eval::evaluate_pawns() const
 	}
 	else
 	{
-		if (pos_.kingpos[white] != pawnhashe_->kingpos[white]
-			|| (pos_.castle_rights & whitecastle) != (pawnhashe_->castling & whitecastle))
+		if (pos_.kingpos[white] != pawnhashentry_->kingpos[white]
+			|| (pos_.castle_rights & whitecastle) != (pawnhashentry_->castling & whitecastle))
 			pawn_shelter_castling<white>();
 
-		if (pos_.kingpos[black] != pawnhashe_->kingpos[black]
-			|| (pos_.castle_rights & blackcastle) != (pawnhashe_->castling & blackcastle))
+		if (pos_.kingpos[black] != pawnhashentry_->kingpos[black]
+			|| (pos_.castle_rights & blackcastle) != (pawnhashentry_->castling & blackcastle))
 			pawn_shelter_castling<black>();
 
-		pawnhashe_->kingpos[white] = pos_.kingpos[white];
-		pawnhashe_->kingpos[black] = pos_.kingpos[black];
-		pawnhashe_->castling = pos_.castle_rights;
+		pawnhashentry_->kingpos[white] = pos_.kingpos[white];
+		pawnhashentry_->kingpos[black] = pos_.kingpos[black];
+		pawnhashentry_->castling = pos_.castle_rights;
 	}
 }
 //-------------------------------------------//
@@ -100,13 +100,13 @@ void Eval::evaluate_pawn_structure() const
 	const color them = ~us;
 	uint64_t my_pawns = pos_.piece_bb[make_piece(us, pawn)];
 	const uint64_t their_pawns = pos_.piece_bb[make_piece(them, pawn)];
-	pawnhashe_->passed_pawns[us] = 0ULL;
-	pawnhashe_->attack_spans[us] = 0ULL;
-	pawnhashe_->semiopen_files[us] = 0xFF;
+	pawnhashentry_->passed_pawns[us] = 0ULL;
+	pawnhashentry_->attack_spans[us] = 0ULL;
+	pawnhashentry_->semiopen_files[us] = 0xFF;
 	while (my_pawns)
 	{
 		const int sq = pop_lsb(my_pawns);
-		pawnhashe_->attack_spans[us] |= passed_pawn_masks[us][sq] ^ pawn_blocker_masks[us][sq];
+		pawnhashentry_->attack_spans[us] |= passed_pawn_masks[us][sq] ^ pawn_blocker_masks[us][sq];
 
 		const int fwd1 = PAWNPUSHINDEX(us, sq);
 		const int fwd2 = PAWNPUSHINDEX(us, fwd1);
@@ -148,11 +148,11 @@ void Eval::evaluate_pawn_structure() const
 				|| passed_pawn_masks[us][fwd2] & their_pawns
 				&& popcnt(phalanx) >= popcnt(forward_threats)
 				))
-			pawnhashe_->passed_pawns[us] |= BITSET(sq);
-		pawnhashe_->semiopen_files[us] &= ~(1 << FILE(sq));
+			pawnhashentry_->passed_pawns[us] |= BITSET(sq);
+		pawnhashentry_->semiopen_files[us] &= ~(1 << FILE(sq));
 	}
 
-	pawnhashe_->scores[us] = pawn_structure;
+	pawnhashentry_->scores[us] = pawn_structure;
 }
 //-------------------------------------------//
 template <color Side, piece_type Type>
@@ -188,7 +188,7 @@ Score Eval::evaluate_piece()
 
 		if (Type == bishop || Type == knight)
 		{
-			if (const uint64_t outpost_squares = outpostranks & ~pawnhashe_->attack_spans[opponent]; outpost_squares & BITSET(sq))
+			if (const uint64_t outpost_squares = outpostranks & ~pawnhashentry_->attack_spans[opponent]; outpost_squares & BITSET(sq))
 			{
 				out += outpost_bonus[static_cast<bool>(attacked_squares_[make_piece(Side, pawn)] & BITSET(sq))][Type == knight];
 			}
@@ -224,9 +224,9 @@ Score Eval::evaluate_piece()
 
 		if (Type == rook)
 		{
-			if (pawnhashe_->semiopen_files[Side] & 1 << FILE(sq))
+			if (pawnhashentry_->semiopen_files[Side] & 1 << FILE(sq))
 			{
-				if (pawnhashe_->semiopen_files[opponent] & 1 << FILE(sq))
+				if (pawnhashentry_->semiopen_files[opponent] & 1 << FILE(sq))
 				{
 					out += rook_file[1];
 				}
@@ -329,7 +329,7 @@ Score Eval::king_safety() const
 	int out_mg = 0;
 	int out_eg = 0;
 	const int king_square = pos_.kingpos[Side];
-	const int pawn_shelter = pawnhashe_->pawn_shelter[Side];
+	const int pawn_shelter = pawnhashentry_->pawn_shelter[Side];
 	out_mg += pawn_shelter;
 
 	if (king_attackers_count_[Side] > 1 - pos_.piece_count[make_piece(opponent, queen)])
@@ -473,12 +473,12 @@ int Eval::pawn_shelter_score(const int sq) const
 template <color Side>
 void Eval::pawn_shelter_castling() const
 {
-	pawnhashe_->pawn_shelter[Side] = pawn_shelter_score<Side>(pos_.kingpos[Side]);
+	pawnhashentry_->pawn_shelter[Side] = pawn_shelter_score<Side>(pos_.kingpos[Side]);
 	if (pos_.castle_rights & kingside_castle_masks[Side])
-		pawnhashe_->pawn_shelter[Side] = std::max(pawnhashe_->pawn_shelter[Side], pawn_shelter_score<Side>(castle_king_to[2 * Side + kingside]));
+		pawnhashentry_->pawn_shelter[Side] = std::max(pawnhashentry_->pawn_shelter[Side], pawn_shelter_score<Side>(castle_king_to[2 * Side + kingside]));
 
 	if (pos_.castle_rights & queenside_castle_masks[Side])
-		pawnhashe_->pawn_shelter[Side] = std::max(pawnhashe_->pawn_shelter[Side], pawn_shelter_score<Side>(castle_king_to[2 * Side + queenside]));
+		pawnhashentry_->pawn_shelter[Side] = std::max(pawnhashentry_->pawn_shelter[Side], pawn_shelter_score<Side>(castle_king_to[2 * Side + queenside]));
 }
 //-------------------------------------------//
 void Eval::pre_eval()
@@ -608,12 +608,12 @@ int Eval::value()
 		return 1 - static_cast<int>(pos_.my_thread->nodes & 2);
 	}
 
-	pawnhashe_ = get_pawntte(pos_);
+	pawnhashentry_ = get_pawntte(pos_);
 	evaluate_pawns();
 
 	Score out = material->score + pos_.psqt_score;
 
-	out += pawnhashe_->scores[white] - pawnhashe_->scores[black];
+	out += pawnhashentry_->scores[white] - pawnhashentry_->scores[black];
 
 	if (const int lazy_value = (mg_value(out) + eg_value(out)) / 2; abs(lazy_value) >= lazy_threshold + (pos_.non_pawn[0] + pos_.non_pawn[1]) / 64)
 		goto return_flag;

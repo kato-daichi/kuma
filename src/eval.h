@@ -9,8 +9,8 @@
 class Eval
 {
 public:
-	explicit Eval(const Position& p) : pos_(p), pawnhashe_(nullptr), mobility_area_{}, double_targets_{}, king_rings_{}, king_attackers_count_{},
-		king_attacks_count_{}, king_attackers_weight_{}
+	explicit Eval(const Position& p) : pos_(p), king_attackers_count_{}, king_attackers_weight_{}, king_attacks_count_{},
+		pawnhashentry_(nullptr), double_targets_{}, king_rings_{}, mobility_area_{}
 	{
 		memset(&attacked_squares_, 0, sizeof attacked_squares_);
 	}
@@ -20,7 +20,7 @@ private:
 	int king_attackers_count_[2];
 	int king_attackers_weight_[2];
 	int king_attacks_count_[2];
-	pawnhash_entry* pawnhashe_;
+	pawnhash_entry* pawnhashentry_;
 	Score mobility_[2] = { S(0, 0), S(0, 0) };
 	template <color Side, piece_type Type>Score evaluate_piece();
 	template <color Side>[[nodiscard]] int pawn_shelter_score(int sq) const;
