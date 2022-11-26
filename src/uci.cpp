@@ -36,7 +36,7 @@ void cmd_fen()
 				if (args[i].length() == 5)
 				{
 					const piece_type promote = get_piece_type(args[i][4]);
-					m = static_cast<move>(m | ((promote - knight) << 12));
+					m = static_cast<move>(m | (promote - knight) << 12);
 				}
 			}
 			if (m != move_none && position.is_pseudo_legal(m))

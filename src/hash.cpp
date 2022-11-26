@@ -112,7 +112,7 @@ void save_entry(hash_entry* entry, const uint64_t key, const move m, const int d
 	{
 		entry->hashupper = upper;
 		entry->depth = static_cast<int8_t>(depth);
-		entry->flags = hash.generation << 2 | flag;
+		entry->flags = static_cast<uint8_t>(hash.generation << 2 | flag);
 		entry->static_eval = static_cast<int16_t>(static_eval);
 		entry->value = static_cast<int16_t>(score);
 	}
