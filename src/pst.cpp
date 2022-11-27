@@ -11,18 +11,18 @@ void init_values()
 {
 	for (int i = 0; i < 64; i++)
 	{
-		psq.psqt[wpawn][i] = (piece_bonus[pawn][FLIP_SQUARE(white, i)] + S(pawn_mg, pawn_eg)) * S2_M_SIGN(white);
-		psq.psqt[bpawn][i] = (piece_bonus[pawn][FLIP_SQUARE(black, i)] + S(pawn_mg, pawn_eg)) * S2_M_SIGN(black);
-		psq.psqt[wknight][i] = (piece_bonus[knight][FLIP_SQUARE(white, i)] + S(knight_mg, knight_eg)) * S2_M_SIGN(white);
-		psq.psqt[bknight][i] = (piece_bonus[knight][FLIP_SQUARE(black, i)] + S(knight_mg, knight_eg)) * S2_M_SIGN(black);
-		psq.psqt[wbishop][i] = (piece_bonus[bishop][FLIP_SQUARE(white, i)] + S(bishop_mg, bishop_eg)) * S2_M_SIGN(white);
-		psq.psqt[bbishop][i] = (piece_bonus[bishop][FLIP_SQUARE(black, i)] + S(bishop_mg, bishop_eg)) * S2_M_SIGN(black);
-		psq.psqt[wrook][i] = (piece_bonus[rook][FLIP_SQUARE(white, i)] + S(rook_mg, rook_eg)) * S2_M_SIGN(white);
-		psq.psqt[brook][i] = (piece_bonus[rook][FLIP_SQUARE(black, i)] + S(rook_mg, rook_eg)) * S2_M_SIGN(black);
-		psq.psqt[wqueen][i] = (piece_bonus[queen][FLIP_SQUARE(white, i)] + S(queen_mg, queen_eg)) * S2_M_SIGN(white);
-		psq.psqt[bqueen][i] = (piece_bonus[queen][FLIP_SQUARE(black, i)] + S(queen_mg, queen_eg)) * S2_M_SIGN(black);
-		psq.psqt[wking][i] = (piece_bonus[king][FLIP_SQUARE(white, i)] + S(king_mg, king_eg)) * S2_M_SIGN(white);
-		psq.psqt[bking][i] = (piece_bonus[king][FLIP_SQUARE(black, i)] + S(king_mg, king_eg)) * S2_M_SIGN(black);
+		psq.psqt[wpawn][i] = (psq_bonus[pawn][FLIP_SQUARE(white, i)] + S(pawn_mg, pawn_eg)) * S2_M_SIGN(white);
+		psq.psqt[bpawn][i] = (psq_bonus[pawn][FLIP_SQUARE(black, i)] + S(pawn_mg, pawn_eg)) * S2_M_SIGN(black);
+		psq.psqt[wknight][i] = (psq_bonus[knight][FLIP_SQUARE(white, i)] + S(knight_mg, knight_eg)) * S2_M_SIGN(white);
+		psq.psqt[bknight][i] = (psq_bonus[knight][FLIP_SQUARE(black, i)] + S(knight_mg, knight_eg)) * S2_M_SIGN(black);
+		psq.psqt[wbishop][i] = (psq_bonus[bishop][FLIP_SQUARE(white, i)] + S(bishop_mg, bishop_eg)) * S2_M_SIGN(white);
+		psq.psqt[bbishop][i] = (psq_bonus[bishop][FLIP_SQUARE(black, i)] + S(bishop_mg, bishop_eg)) * S2_M_SIGN(black);
+		psq.psqt[wrook][i] = (psq_bonus[rook][FLIP_SQUARE(white, i)] + S(rook_mg, rook_eg)) * S2_M_SIGN(white);
+		psq.psqt[brook][i] = (psq_bonus[rook][FLIP_SQUARE(black, i)] + S(rook_mg, rook_eg)) * S2_M_SIGN(black);
+		psq.psqt[wqueen][i] = (psq_bonus[queen][FLIP_SQUARE(white, i)] + S(queen_mg, queen_eg)) * S2_M_SIGN(white);
+		psq.psqt[bqueen][i] = (psq_bonus[queen][FLIP_SQUARE(black, i)] + S(queen_mg, queen_eg)) * S2_M_SIGN(black);
+		psq.psqt[wking][i] = (psq_bonus[king][FLIP_SQUARE(white, i)] + S(king_mg, king_eg)) * S2_M_SIGN(white);
+		psq.psqt[bking][i] = (psq_bonus[king][FLIP_SQUARE(black, i)] + S(king_mg, king_eg)) * S2_M_SIGN(black);
 	}
 
 	piece_values[mg][0] = piece_values[mg][1] = 0;

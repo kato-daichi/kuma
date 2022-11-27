@@ -40,7 +40,7 @@ int alpha_beta(searchthread* thread, searchinfo* info, int depth, int alpha, int
 		return q_search(thread, info, 0, alpha, beta);
 	}
 
-	int ply = info->ply;
+	int ply = static_cast<uint8_t>(info->ply);
 	bool is_pv = beta - alpha > 1;
 	if (is_pv)
 	{
