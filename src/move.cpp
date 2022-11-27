@@ -653,9 +653,9 @@ void insertion_sort(s_move* head, const s_move* tail)
 //-------------------------------------------//
 move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 {
+	move m;
 	switch (state)
 	{
-		move m;
 	case hashmove_state:
 		++state;
 		return hashmove;
