@@ -185,7 +185,7 @@ constexpr move make_move(const int from, const int to, const special_type type)
 //-------------------------------------------//
 constexpr move make_promotion_move(const int from, const int to, const piece_type promote, const special_type type)
 {
-	return static_cast<move>((type << 14) | ((promote - knight) << 12) | (from << 6) | to);
+	return static_cast<move>(type << 14 | (promote - knight) << 12 | from << 6 | to);
 }
 //-------------------------------------------//
 constexpr piece_code make_piece(const color c, const piece_type pt)
