@@ -664,6 +664,7 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 		end_moves = generate_all<tactical>(*pos_, curr);
 		score_moves(info, score_capture);
 		++state;
+		[[fallthrough]];
 	case tactical_state:
 		while (curr < end_moves)
 		{
@@ -683,7 +684,7 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 		{
 			return m;
 		}
-
+		[[fallthrough]];
 	case killer_move_2:
 		++state;
 		m = info->killers[1];
@@ -691,6 +692,7 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 		{
 			return m;
 		}
+		[[fallthrough]];
 	case countermove:
 		++state;
 		m = counter_move;
@@ -704,6 +706,7 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 		{
 			return m;
 		}
+		[[fallthrough]];
 	case quiets_init:
 		if (!skip_quiets)
 		{
@@ -713,6 +716,7 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 			insertion_sort(curr, end_moves);
 		}
 		++state;
+		[[fallthrough]];
 	case quiet_state:
 		if (!skip_quiets)
 		{
@@ -732,6 +736,7 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 		++state;
 		curr = move_list;
 		end_moves = end_bad_captures;
+		[[fallthrough]];
 	case bad_tactical_state:
 		while (curr < end_moves)
 		{
@@ -740,13 +745,12 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 				return m;
 		}
 		break;
-
 	case evasions_init:
 		curr = move_list;
 		end_moves = generate_all<evasion>(*pos_, curr);
 		score_moves(info, score_evasion);
 		++state;
-
+		[[fallthrough]];
 	case evasions_state:
 		while (curr < end_moves)
 		{
@@ -763,7 +767,7 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 		end_moves = generate_all<tactical>(*pos_, curr);
 		score_moves(info, score_capture);
 		++state;
-
+		[[fallthrough]];
 	case q_captures:
 		while (curr < end_moves)
 		{
@@ -776,12 +780,12 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 		if (depth != 0)
 			break;
 		++state;
-
+		[[fallthrough]];
 	case q_checks_init:
 		curr = move_list;
 		end_moves = generate_all<quiet_check>(*pos_, curr);
 		++state;
-
+		[[fallthrough]];
 	case q_checks:
 		while (curr < end_moves)
 		{
@@ -800,7 +804,7 @@ move move_gen::next_move(const searchinfo* info, const bool skip_quiets)
 		end_moves = generate_all<tactical>(*pos_, curr);
 		score_moves(info, score_capture);
 		++state;
-
+		[[fallthrough]];
 	case probcut_captures:
 		while (curr < end_moves)
 		{
