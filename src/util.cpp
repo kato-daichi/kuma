@@ -17,21 +17,11 @@
 //-------------------------------------------//
 void* alloc_aligned_mem(const size_t alloc_size, void*& mem)
 {
-#if defined(__linux__) && !defined(__ANDROID__)
-    cout << "Using large pages" << endl;
-    constexpr size_t alignment = 2 * 1024 * 1024;
-    size_t size = ((allocSize + alignment - 1) / alignment) * alignment;
-    if (posix_memalign(&mem, alignment, size))
-        mem = nullptr;
-    madvise(mem, allocSize, MADV_HUGEPAGE);
-    return mem;
-#else
 	constexpr size_t alignment = 64;
 	const size_t size = alloc_size + alignment - 1;
 	mem = malloc(size);
 	const auto ret = (void*)(reinterpret_cast<uintptr_t>(mem) + alignment - 1 & ~(alignment - 1));
 	return ret;
-#endif
 }
 //-------------------------------------------//
 std::vector<std::string> split_string(const char* c)
