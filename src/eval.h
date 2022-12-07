@@ -68,9 +68,9 @@ inline materialhashentry* get_material_entry(const Position& p)
 	return &p.my_thread->material_table[p.materialhash & material_hash_size_mask];
 }
 //-------------------------------------------//
-inline constexpr int bishop_eg = 534;
-inline constexpr int bishop_mg = 426;
-inline constexpr int bishop_pair = 70;
+inline constexpr int bishop_eg = 528;
+inline constexpr int bishop_mg = 420;
+inline constexpr int bishop_pair = 64;
 inline constexpr int king_danger_base = -10;
 inline constexpr int king_eg = 0;
 inline constexpr int king_mg = 0;
