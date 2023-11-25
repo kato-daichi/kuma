@@ -1,0 +1,14 @@
+https://www.chessprogramming.org/Main_Page
+
+and the many engines without which kuma would not exist:
+
+stockfish https://github.com/official-stockfish/Stockfish
+berserk https://github.com/jhonnold/berserk
+koivisto https://github.com/Luecx/Koivisto
+beef https://github.com/jtseng20/Beef
+fire https://github.com/FireFather/fire
+xiphos https://github.com/milostatarevic/xiphos
+laser https://github.com/jeffreyan11/laser-chess-engine
+sayuri https://github.com/MetalPhaeton/sayuri
+teki https://github.com/Mk-Chan/Teki
+senpai https://github.com/B4dT0bi/senpai
