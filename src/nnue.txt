@@ -1,3 +1,0 @@
--halfkp_256x2-32-32
--kuma 1.0 & 1.1 self-play games
--https://github.com/dshawul/nnue-probe
