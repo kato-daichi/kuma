@@ -10,6 +10,7 @@
 #include "eval.h"
 #include "move.h"
 #include "chrono.h"
+#include "movegen.h"
 #include "thread.h"
 #include "search.h"
 //-------------------------------------------//
@@ -25,7 +26,7 @@
 //-------------------------------------------//
 void add_history_bonus(int16_t* history, const int16_t bonus)
 {
-	*history += bonus - *history * abs(bonus) / 16384;
+	*history += static_cast<int>(bonus) - *history * abs(bonus) / static_cast<int16_t>(16384);
 }
 //-------------------------------------------//
 inline bool is_valid(const move m)
@@ -62,7 +63,7 @@ int alpha_beta(searchthread* thread, searchinfo* info, int depth, int alpha, int
 		}
 		if (is_draw(pos))
 		{
-			return 1 - (thread->nodes & 2);
+			return 1 - static_cast<int>(thread->nodes & 2);
 		}
 		alpha = std::max(value_mated + ply, alpha);
 		beta = std::min(value_mate - ply, beta);
@@ -104,7 +105,7 @@ int alpha_beta(searchthread* thread, searchinfo* info, int depth, int alpha, int
 					}
 					else
 					{
-						int16_t penalty = -history_bonus(static_cast<int16_t>(depth));
+			            int16_t penalty = static_cast<int16_t>(-history_bonus(static_cast<int16_t>(depth)));
 						add_history_bonus(
 							&thread->history_table[pos->active_side][from_sq(hash_move)][to_sq(hash_move)], penalty);
 						update_countermove_histories(info, pos->mailbox[from_sq(hash_move)], to_sq(hash_move), penalty);
@@ -563,7 +564,7 @@ int q_search(searchthread* thread, searchinfo* info, const int depth, int alpha,
 		longjmp(thread->jbuffer, 1);
 	}
 	if (is_draw(pos))
-		return 1 - (thread->nodes & 2);
+		return static_cast<int>(1 - (thread->nodes & 2));
 	const bool in_check = static_cast<bool>(pos->check_bb);
 	if (ply >= max_ply)
 	{
@@ -724,8 +725,8 @@ void update_heuristics(const Position* pos, searchinfo* info, const int best_sco
 		{
 			const int from = from_sq(quiets[i]);
 			const int to = to_sq(quiets[i]);
-			add_history_bonus(&pos->my_thread->history_table[pos->active_side][from][to], -bonus);
-			update_countermove_histories(info, pos->mailbox[from], to, -bonus);
+			add_history_bonus(&pos->my_thread->history_table[pos->active_side][from][to], static_cast<int16_t>(-bonus));
+			update_countermove_histories(info, pos->mailbox[from], to, static_cast<int16_t>(-bonus));
 		}
 	}
 }
@@ -757,7 +758,6 @@ void* think(void* p)
 		std::cout << " ponder " << move_to_str(ponder_move);
 	}
 	std::cout << std::endl;
-	fflush(stdout);
 	return nullptr;
 }
 //-------------------------------------------//
