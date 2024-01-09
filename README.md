@@ -1,6 +1,4 @@
 # kuma
-クマのチェスエンジン
-uci chess engine
 
   [![Release][release-badge]][release-link]
   [![Commits][commits-badge]][commits-link]
@@ -8,6 +6,9 @@ uci chess engine
   [![License][license-badge]][license-link]
   
 ![alt tag](https://raw.githubusercontent.com/kato-daichi/kuma/master/src/japan-bear.jpg)
+
+クマのチェスエンジン
+uci chess engine
 
 ## feature
 - c++20
