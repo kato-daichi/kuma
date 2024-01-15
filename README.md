@@ -56,7 +56,7 @@ It is simple with features that are fast to calculate.
 Kuma borrows ideas and code from the following excellent open-source projects:
 
 - Beef https://github.com/jtseng20/Beef (Jonathan Tseng)
-- Defenchess https://github.com/cetincan0/Defenchess (Can Cetin & Dogac Eldenkà
+- Defenchess https://github.com/cetincan0/Defenchess (Can Cetin & Dogac Eldenkà)
 - Fire https://github.com/FireFather/fire (Norman Schmidt)
 - NNUE probe: https://github.com/dshawul/nnue-probe (Daniel Shawul)
 - NNUE-gui https://github.com/FireFather/nnue-gui (Norman Schmidt)
